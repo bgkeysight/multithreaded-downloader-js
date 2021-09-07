@@ -18,14 +18,17 @@ class MultiThread {
       onFinish: () => this.concatChunks().then(this.onFinish)
     })
 
+    
+    this.headers.set('Range', 'bytes=0-0')
+    
     window.fetch(this.url, {
-      method: 'HEAD',
+      method: 'GET',
       mode: 'cors',
       headers: this.headers,
       signal: this.controller.signal
     })
       .then(response => {
-        this.contentLength = parseInt(response.headers.get('Content-Length') || response.headers.get('content-length'))
+        this.contentLength = parseInt((response.headers.get('Content-Range') || response.headers.get('content-range')).split('/')[1])
         this.chunkTotal = Math.ceil(this.contentLength / this.chunkSize)
         this.onStart({contentLength: this.contentLength, chunks: this.chunkTotal})
 
