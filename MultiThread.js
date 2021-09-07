@@ -28,7 +28,7 @@ class MultiThread {
       signal: this.controller.signal
     })
       .then(response => {
-        this.contentLength = parseInt((response.headers.get('Content-Range').split('/')[1])
+        this.contentLength = parseInt(response.headers.get('Content-Range').split('/')[1])
         this.chunkTotal = Math.ceil(this.contentLength / this.chunkSize)
         this.onStart({contentLength: this.contentLength, chunks: this.chunkTotal})
 
